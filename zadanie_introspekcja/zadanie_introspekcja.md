@@ -2,7 +2,7 @@
 ___
 
 Na samym dole pliku znajdziesz pomocne informacje do rozwiązania zadań.
-Przed zajęciami polecamy wykonać zadania z sekcji Przygotowanie, przynajmniej jeśli - chodzi o git clone oraz przeczytanie i zrozumienie
+Przed zajęciami polecamy wykonać punkty z sekcji Przygotowanie oraz przeczytać sekcje Pomoce.
 
 ### Cel
 
@@ -10,14 +10,14 @@ Zapoznanie się z funkcjonalnościami biblioteki do introspekcji maszyn wirtualn
 
 ### Zadanie
 
-Utwórz prosty program w C po stronie gościa, który tworzy zmienną volatile oraz wypisuje jej adres oraz wartość. Następnie z użyciem LibVMI - zapauzuj wirtualną maszynę, wylistuj aktualnie działające na maszynie procesy, znajdź uruchomiony proces, użyj funkcji do odczytywania pamięci wirtualnej oraz funkcji do odczytywania pamięci fizycznej dla naszej zmiennej. Sprawdź czy wartości się zgadzają - adres pamięci fizycznej pobierz przy pomocy skryptu python czytającego plik /proc/{pid}/pagemap.
+Utwórz prosty program w C po stronie gościa, który tworzy zmienną volatile oraz wypisuje jej adres oraz wartość. Następnie z użyciem LibVMI - zapauzuj wirtualną maszynę, wylistuj aktualnie działające na maszynie procesy, znajdź uruchomiony proces, użyj funkcji do odczytywania pamięci wirtualnej oraz funkcji do odczytywania pamięci fizycznej dla naszej zmiennej. Sprawdź czy wartości się zgadzają - adres pamięci fizycznej pobierz przy pomocy skryptu python czytającego plik /proc/{pid}/pagemap na maszynie gościa.
 
 
 ## 1. Przygotowanie
 
 - Utwórz VM przy pomocy dostarczonego pliku .qcow - pliki qcow pozwalają na szybkie przenoszenie maszyn wirtualnych oraz tworzenie ich kopii.
 
-- Vm-ka ma pobrane wszystie potrzebne moduły - jest dostępny kompilator gcc, python, narzędzie make. W katalogu domowym znajduje się narzędzie linux-offset-finder jest to rozszerzenie jądra które pozwoli na znalezienie potrzebnych offsetów. Po wykonaniu operacji insmod użyj poniższego kodu, aby wyświetlić:
+- Vm-ka ma pobrane wszystie potrzebne moduły - jest dostępny kompilator gcc, python, narzędzie make. W katalogu domowym znajduje się narzędzie linux-offset-finder jest to rozszerzenie jądra które pozwoli na znalezienie potrzebnych offsetów. Po wykonaniu operacji insmod użyj poniższego kodu, aby zapisać potrzebne dane do pliku:
 
 
 ```bash 
@@ -45,7 +45,7 @@ make
 sudo make install
 ```
 
-- Kompilujemy LibVMI z wykorzystaniem KVM_LEGACY, które jest okrojone - jednakże nie wymaga od nas instalowania dodatkowych modułów do jądra. Wersja KVM jest ciekawsza pozwala np. na rejestrowanie eventów oraz odczytywanie rejestrów vCPU.
+- Kompilujemy LibVMI z wykorzystaniem KVM_LEGACY, które jest delikatnie okrojone względem KVM - jednakże nie wymaga od nas instalowania dodatkowych modułów do jądra. Wersja KVM jest ciekawsza pozwala np. na rejestrowanie eventów oraz odczytywanie rejestrów vCPU.
 
 - Wykorzystaj przesłane offsety oraz plik System.map i zapisz je w formacie takim jaki jest przedstawiony w README libvmi.
 
@@ -53,19 +53,19 @@ sudo make install
 
 ## 2. Na maszynie wirtualnej
 
-- Utwórz prosty program, który posiada zmienną globalną volatile dowolnego typu (volatile, aby kompilator nie optymalizował). Wypisz zmienną wraz z jej adresem na ekran. (wskazówka: spłukaj bufor, bo może się nic nie wypisywać - fflush)
+- Utwórz prosty program, w którym mamy zmienną globalną volatile dowolnego typu (volatile, aby kompilator nie optymalizował). Wypisz zmienną wraz z jej adresem na ekran. (wskazówka: spłukaj bufor, bo może się nic nie wypisywać - fflush)
 
 - (To proponuje wykonać na końcu, na razie nie twórz skryptu tylko skorzystaj z odpowiedniej metody LibVMI (poniżej), potem możesz utworzyć jeszcze skrypt lub wykorzystać gotowy) Utwórz skrypt Python tłumaczący adres wirtualny zmiennej na fizyczny. Wykorzystamy do tego celu plik binarny /proc/{pid}/pagemap, który przechowuje przechowuje mapowanie stron pamięci wirtualnej procesu na fizyczne ramki pamięci (PFN – Page Frame Number).
 
 
 ## 3. Na hoście
 
-Introspekcja maszyn wirtualnych (VMI – Virtual Machine Introspection) to technika polegająca na obserwowaniu i analizowaniu stanu maszyny wirtualnej „z zewnątrz”, bez konieczności instalowania oprogramowania monitorującego wewnątrz tej maszyny. Można ją wykorzystać monitorowania procesów, podglądania, czy też debugowania działania systemów operacyjnych czy też jądra, oferuję możliwość testowania malware'u itp.
+Introspekcja maszyn wirtualnych (VMI – Virtual Machine Introspection) to technika polegająca na obserwowaniu i analizowaniu stanu maszyny wirtualnej „z zewnątrz”, bez konieczności instalowania oprogramowania monitorującego wewnątrz tej maszyny. Można ją wykorzystać do monitorowania procesów, debugowania działania systemów operacyjnych i np. jądra. Oferuje możliwość testowania malware'u itp.
 
 - Zainicjalizuj LibVMI przy pomocy nazwy VM i odczytaj informacje o maszynie wirtualnej takie jak tryb adresowania, ilość vCPU oraz ilość pamięci fizycznej, w dodatku możesz przetestować pauzowanie i wznawianie maszyny wirtualnej.
 
 
-- Stwórz program, który wylistuje wszystkie procesy uruchomione na wirtualnej maszynie, następnie znajdź proces, który uruchomiłeś w ramach poprzedniego zadania i spróbuj odczytać dane z pamięci przy pomocy adresu wirtualnego oraz fizycznego (dodaj je jako stałe w programie). LibVMI daje możliwość tłumaczenia adresów jednak dla przetestowania działania skryptu czytającego pagemap odczytaj je w ten sposób. Podczas kompilacji używaj flagi -lvmi!
+- Stwórz program, który wylistuje wszystkie procesy uruchomione na wirtualnej maszynie, następnie znajdź proces, który uruchomiłeś w ramach poprzedniego zadania i spróbuj odczytać dane z pamięci przy pomocy adresu wirtualnego oraz fizycznego (dodaj je jako stałe w programie). LibVMI daje możliwość tłumaczenia adresów jednak dla przetestowania działania skryptu czytającego pagemap odczytaj je za jego pomocą. Podczas kompilacji używaj flagi -lvmi!
 
 - Zamknij połączenie z VM
 
@@ -102,7 +102,6 @@ PAGE_SIZE = os.sysconf("SC_PAGE_SIZE") # pobierz wielkość strony danych ze zmi
 with open(nazwa_pliku, "rb") as f # otwiera plik w trybie binarnym do odczytu
 f.seek(offset) # przesuwa wskaźnik odczytywania pliku
 f.read(number_of_bytes)
-struct.unpack("Q", entry_bytes)[0]
 import struct
 entry = struct.unpack("Q", entry_bytes)[0] #zamienia odczytane bity na wartość 64 bitową (unsigned long long) i wypakowuje tylko wartość (w entry już znajduję się odpowiednia wartość)
 ```
@@ -111,11 +110,11 @@ entry = struct.unpack("Q", entry_bytes)[0] #zamienia odczytane bity na wartość
 
 Musimy znaleźć dokładną stronę i offset w ramach strony, aby znaleźć nasz adres fizyczny.
 
-Indeks strony oraz offset łatwo znaleźć przy pomocy adresu wirtualnego ponieważ numer strony będzie częścią stałą z dzielenia adresu przez PAGE_SIZE, a offset będzie modulo z tego dzielenia. Następnie wystarczy odczytać 8 bajtów z indeksu strony w pliku pagemap, aby otrzymać pewną strukturę w której najbardziej znaczący bit oznacza czy strona jest wogóle dostępna w pamięci, a bity 55-0 przechowują fizyczny numer strony.
+Indeks strony oraz offset łatwo znaleźć przy pomocy adresu wirtualnego ponieważ numer strony będzie częścią stałą z dzielenia adresu przez PAGE_SIZE, a offset będzie resztą z tego dzielenia. Następnie wystarczy odczytać 8 bajtów z indeksu strony w pliku pagemap, aby otrzymać pewną strukturę w której najbardziej znaczący bit oznacza czy strona jest wogóle dostępna w pamięci, a bity 55-0 przechowują fizyczny numer strony.
 
 Następnie pomnóż numer strony przez jej wielkość i dodaj offset :).
 
-Normalnie tłumaczenie adresów wirtualnych na fizyczne w systemach operacyjnych przechodzi przez wiele systemów map, gdzie odczytuję się cześci adresu i na ich podstawie przechodzi się z mapy do mapy, aby w końcu otrzymać fizyczną ramkę i offset. Ważne jest, że każdy proces ma inną początkową mapę tzw. root page table i jej wartość jest przechowywana w strukturze task_struct (nie na jej początku tylko na początku + pewien offset), która przechowuje informację o procesach w pamięci procesu 0(kernel). Przy przełączaniu kontekstu kernel pobiera odpowiedni wskaźnik (adres bazy tablicy stron) z mm_struct procesu i ładuje do CR3 fizyczny adres ramki bazowej page-table. Pagemap jedynie odczytuje i prezentuje dane, które jądro przechowuje o mapowaniach. W środowisku VM pojawia się dodatkowa warstwa: nested page tables (EPT w Intel / NPT w AMD). Wtedy translacja VA (Adres Wirtualny Procesu) -> GPA(Adres Fizyczny Gościa) -> HPA (Adres Fizyczny Hosta) wymaga dodatkowego kroku. (takie struktury przechowywane są hardware'owo i nie da się ich odczytać z poziomu systemu operacyjnego)(dlatego zadanie nie jest o nich dokładnie, ale warto wiedzieć :)).
+Normalnie tłumaczenie adresów wirtualnych na fizyczne w systemach operacyjnych przechodzi przez hierarchiczny system map, gdzie odczytuję się cześci adresu i na ich podstawie przechodzi się z mapy do mapy, aby w końcu otrzymać fizyczną ramkę z offsetem. Ważne jest, że każdy proces ma inną początkową mapę tzw. root page table i jej wartość jest przechowywana w strukturze task_struct (nie na jej początku tylko na początku + pewien offset), która przechowuje informację o procesach w pamięci procesu 0 (kernela). Przy przełączaniu kontekstu kernel pobiera odpowiedni wskaźnik (adres bazy tablicy stron) z mm_struct procesu i ładuje do CR3 fizyczny adres ramki bazowej page-table. Pagemap jedynie odczytuje i prezentuje dane, które jądro przechowuje o mapowaniach. W środowisku VM pojawia się dodatkowa warstwa: nested page tables (EPT w Intel / NPT w AMD). Wtedy translacja VA (Adres Wirtualny Procesu) -> GPA(Adres Fizyczny Gościa) -> HPA (Adres Fizyczny Hosta) wymaga dodatkowego kroku, który zazwyczaj implementowany jest sprzętowo, więc nie możemy podejrzeć tego procesu z poziomu systemu operacyjnego. (a szkoda, bo taki był początkowo pomysł na zadanko :))
 
 - Listowanie zadań na VM-ce
 
@@ -141,4 +140,4 @@ dopóki bieżący element listy nie wrócił do początku:
 
 
 ## NA KONIEC
-Jeśli życzysz sobie odinstalować LibVMI to skorzystaj ze skryptu remove_libvmi - upewnij się, jednak czy nie odinstalowuje Ci czegoś turbo ważnego :) (nie powinienem)
+Jeśli życzysz sobie odinstalować LibVMI to skorzystaj ze skryptu remove_libvmi.sh - upewnij się, jednak czy nie odinstalowuje Ci czegoś turbo ważnego :) (nie powinienem)
