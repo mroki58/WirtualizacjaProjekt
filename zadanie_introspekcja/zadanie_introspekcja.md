@@ -65,7 +65,7 @@ Introspekcja maszyn wirtualnych (VMI – Virtual Machine Introspection) to techn
 - Zainicjalizuj LibVMI przy pomocy nazwy VM i odczytaj informacje o maszynie wirtualnej takie jak tryb adresowania, ilość vCPU oraz ilość pamięci fizycznej, w dodatku możesz przetestować pauzowanie i wznawianie maszyny wirtualnej.
 
 
-- Stwórz program, który wylistuje wszystkie procesy uruchomione na wirtualnej maszynie, następnie znajdź proces, który uruchomiłeś w ramach poprzedniego zadania i spróbuj odczytać dane z pamięci przy pomocy adresu wirtualnego oraz fizycznego (dodaj je jako stałe w programie). LibVMI daje możliwość tłumaczenia adresów jednak dla przetestowania działania skryptu czytającego pagemap odczytaj je w ten sposób.
+- Stwórz program, który wylistuje wszystkie procesy uruchomione na wirtualnej maszynie, następnie znajdź proces, który uruchomiłeś w ramach poprzedniego zadania i spróbuj odczytać dane z pamięci przy pomocy adresu wirtualnego oraz fizycznego (dodaj je jako stałe w programie). LibVMI daje możliwość tłumaczenia adresów jednak dla przetestowania działania skryptu czytającego pagemap odczytaj je w ten sposób. Podczas kompilacji używaj flagi -lvmi!
 
 - Zamknij połączenie z VM
 
