@@ -75,10 +75,6 @@ Instrukcje takie jak CPUID,… mogą wywoływać VM-exit w zależności od ustaw
 | Guest-state area           |          |
 | Host-state area            |          |
 
-## Zadanie 5. Introspekcja
-
-Zadanie znajduje się w podfolderze zadanie_introspekcja.
-
 # Przygotowanie środowiska
 
 1. Pobierz środowisko [https://alpinelinux.org/downloads](https://alpinelinux.org/downloads)
@@ -87,3 +83,13 @@ Zadanie znajduje się w podfolderze zadanie_introspekcja.
 4. setup-alpine (pamiętaj o skorzystaniu dysku jako sys)
 5. apk update
 6. apk add build-base linux-headers nano vim pciuthils ethtool (nano/vim zamiennie w zależności od preferowanego edytora tekstowego)
+
+## Zadanie 5. Introspekcja
+
+Zadanie oraz wymagane przygotowanie znajduje się w podfolderze zadanie_introspekcja. Przy okazji, jeśli nie korzysta się jeszcze z KVM to poniżej znajdują się przydatne linki:
+
+- Instalacja na ubuntu: https://www.cherryservers.com/blog/install-kvm-ubuntu
+- Instalacja na fedora: https://docs.fedoraproject.org/en-US/quick-docs/virtualization-getting-started/
+
+Link do VM, którą wykorzystamy w tym zadaniu:
+https://drive.google.com/file/d/1XeaRDhbHE7_CVhFU_SKbtMHkgdtyJjaE/view?usp=sharing
