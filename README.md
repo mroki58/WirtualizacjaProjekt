@@ -93,3 +93,8 @@ Zadanie oraz wymagane przygotowanie znajduje się w podfolderze zadanie_introspe
 
 Link do VM, którą wykorzystamy w tym zadaniu:
 https://drive.google.com/file/d/1XeaRDhbHE7_CVhFU_SKbtMHkgdtyJjaE/view?usp=sharing
+
+___
+
+Linki do naszych filmików:
+https://youtu.be/NTTdcLw3FrM
